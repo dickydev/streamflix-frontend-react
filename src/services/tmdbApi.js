@@ -17,5 +17,3 @@ export const fetchSimilarMovies = (movieId) =>
   axios.get(`${BASE_URL}/movie/${movieId}/similar`, {
     params: { api_key: API_KEY },
   });
-
-// Tambahkan endpoint lain yang diperlukan

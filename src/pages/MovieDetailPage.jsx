@@ -3,28 +3,41 @@ import { useParams } from "react-router-dom";
 import { fetchMovieDetails, fetchSimilarMovies } from "../services/tmdbApi";
 import { calculatePrice } from "../utils/priceCalculator";
 import MovieCard from "../components/MovieCard";
+import { Container, Typography, Grid, Button, Box } from "@mui/material";
 
 const MovieDetailPage = () => {
-  const { movieId } = useParams();
+  const { movieId: rawMovieId } = useParams();
+  const movieId = rawMovieId.split("-")[0];
   const [movie, setMovie] = useState(null);
   const [similarMovies, setSimilarMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  console.log(movieId);
 
   useEffect(() => {
     const getMovieDetails = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await fetchMovieDetails(movieId);
+        console.log("Movie Details Response:", response.data);
         setMovie(response.data);
       } catch (error) {
-        console.error(error);
+        setError("Error fetching movie details.");
+        console.error("Error fetching movie details:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     const getSimilarMovies = async () => {
       try {
         const response = await fetchSimilarMovies(movieId);
+        console.log("Similar Movies Response:", response.data.results);
         setSimilarMovies(response.data.results);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching similar movies:", error);
       }
     };
 
@@ -32,31 +45,56 @@ const MovieDetailPage = () => {
     getSimilarMovies();
   }, [movieId]);
 
-  if (!movie) return <p>Loading...</p>;
+  if (loading) return <Typography>Loading movie details...</Typography>;
+  if (error) return <Typography>{error}</Typography>;
+  if (!movie) return <Typography>Movie details not available.</Typography>;
 
   const price = calculatePrice(movie.vote_average);
 
   return (
-    <div>
-      <h1>{movie.title}</h1>
-      <img
-        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-        alt={movie.title}
-      />
-      <p>Rating: {movie.vote_average}</p>
-      <p>Price: Rp. {price.toLocaleString("id-ID")}</p>
-      <p>Duration: {movie.runtime} minutes</p>
-      <p>{movie.overview}</p>
-
-      <button>Beli Film Ini</button>
-
-      <h2>Similar Movies</h2>
-      <div className="similar-movies">
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        {movie.title}
+      </Typography>
+      <Box sx={{ display: "flex", gap: 4 }}>
+        <img
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          alt={movie.title}
+          style={{ width: "300px", borderRadius: "8px" }}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/default_movie_image.jpg";
+          }}
+        />
+        <Box>
+          <Typography variant="body1" paragraph>
+            Rating: {movie.vote_average}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            Price: Rp. {price.toLocaleString("id-ID")}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            Duration: {movie.runtime} minutes
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {movie.overview || "No description available."}
+          </Typography>
+          <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+            Beli Film Ini
+          </Button>
+        </Box>
+      </Box>
+      <Typography variant="h5" sx={{ mt: 4 }}>
+        Similar Movies
+      </Typography>
+      <Grid container spacing={3}>
         {similarMovies.map((simMovie) => (
-          <MovieCard key={simMovie.id} movie={simMovie} />
+          <Grid item xs={12} sm={6} md={4} key={simMovie.id}>
+            <MovieCard movie={simMovie} />
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Container>
   );
 };
 
