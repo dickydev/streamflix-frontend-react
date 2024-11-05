@@ -9,6 +9,7 @@ const HomePage = () => {
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  console.log(searchParams);
   useEffect(() => {
     const fetchMovies = async () => {
       try {

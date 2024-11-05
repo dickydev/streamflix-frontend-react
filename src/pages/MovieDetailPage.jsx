@@ -48,6 +48,16 @@ const MovieDetailPage = () => {
 
   const price = calculatePrice(movie.vote_average);
 
+  const handleAddToCart = () => {
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const updatedCart = [...cartItems, { ...movie, price }];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    window.dispatchEvent(new Event("storage"));
+
+    alert("Film berhasil ditambahkan ke keranjang!");
+  };
+
   const handlePurchase = () => {
     const currentUser = AuthService.getCurrentUser();
     if (currentUser.saldo >= price) {
@@ -107,6 +117,14 @@ const MovieDetailPage = () => {
             onClick={handlePurchase}
           >
             Beli Film Ini
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+            onClick={handleAddToCart}
+          >
+            Tambahkan ke Keranjang
           </Button>
         </Box>
       </Box>

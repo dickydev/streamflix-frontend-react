@@ -8,10 +8,12 @@ import {
   MenuItem,
   IconButton,
   CircularProgress,
+  Badge,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthService } from "../services/AuthService";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
@@ -19,9 +21,10 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [saldo, setSaldo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [cartItems, setCartItems] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   console.log(saldo);
-
   useEffect(() => {
     const fetchSaldo = () => {
       const currentUser = AuthService.getCurrentUser();
@@ -31,11 +34,20 @@ const Navbar = () => {
 
     fetchSaldo();
 
-    const handleStorageChange = () => fetchSaldo();
-    window.addEventListener("storage", handleStorageChange);
+    const handleStorageChange = () => setRefresh((prev) => !prev);
 
+    window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [navigate]);
+
+  useEffect(() => {
+    const fetchSaldo = () => {
+      const currentUser = AuthService.getCurrentUser();
+      setSaldo(currentUser?.saldo || 0);
+    };
+
+    fetchSaldo();
+  }, [refresh]);
 
   const handleProfileClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,6 +63,32 @@ const Navbar = () => {
     handleClose();
   };
 
+  useEffect(() => {
+    const fetchCartItems = () => {
+      const storedCartItems = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(storedCartItems);
+    };
+
+    fetchCartItems();
+
+    const handleStorageChange = (event) => {
+      if (event.key === "cart") {
+        setRefresh((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  useEffect(() => {
+    const fetchCartItems = () => {
+      const storedCartItems = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(storedCartItems);
+    };
+
+    fetchCartItems();
+  }, [refresh]);
   return (
     <AppBar position="static">
       <Container maxWidth="lg">
@@ -75,6 +113,11 @@ const Navbar = () => {
                 aria-haspopup="true"
               >
                 <AccountCircleIcon />
+              </IconButton>
+              <IconButton color="inherit" component={Link} to="/cart">
+                <Badge badgeContent={cartItems.length} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
               </IconButton>
               <Menu
                 id="profile-menu"
