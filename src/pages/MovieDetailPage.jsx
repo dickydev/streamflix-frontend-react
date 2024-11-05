@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchMovieDetails, fetchSimilarMovies } from "../services/tmdbApi";
 import { calculatePrice } from "../utils/priceCalculator";
 import MovieCard from "../components/MovieCard";
 import { Container, Typography, Grid, Button, Box } from "@mui/material";
+import { AuthService } from "../services/AuthService";
 
 const MovieDetailPage = () => {
   const { movieId: rawMovieId } = useParams();
@@ -12,8 +13,7 @@ const MovieDetailPage = () => {
   const [similarMovies, setSimilarMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  console.log(movieId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -21,11 +21,9 @@ const MovieDetailPage = () => {
       setError(null);
       try {
         const response = await fetchMovieDetails(movieId);
-        console.log("Movie Details Response:", response.data);
         setMovie(response.data);
       } catch (error) {
-        setError("Error fetching movie details.");
-        console.error("Error fetching movie details:", error);
+        setError("Error fetching movie details.", error);
       } finally {
         setLoading(false);
       }
@@ -34,7 +32,6 @@ const MovieDetailPage = () => {
     const getSimilarMovies = async () => {
       try {
         const response = await fetchSimilarMovies(movieId);
-        console.log("Similar Movies Response:", response.data.results);
         setSimilarMovies(response.data.results);
       } catch (error) {
         console.error("Error fetching similar movies:", error);
@@ -50,6 +47,30 @@ const MovieDetailPage = () => {
   if (!movie) return <Typography>Movie details not available.</Typography>;
 
   const price = calculatePrice(movie.vote_average);
+
+  const handlePurchase = () => {
+    const currentUser = AuthService.getCurrentUser();
+    if (currentUser.saldo >= price) {
+      const updatedUser = {
+        ...currentUser,
+        saldo: currentUser.saldo - price,
+        purchases: [
+          ...currentUser.purchases,
+          {
+            id: movieId,
+            title: movie.title,
+            price,
+            imageUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          },
+        ],
+      };
+      AuthService.updateUserData(updatedUser);
+      alert("Pembelian berhasil!");
+      navigate("/profile");
+    } else {
+      alert("Saldo tidak mencukupi.");
+    }
+  };
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -79,7 +100,12 @@ const MovieDetailPage = () => {
           <Typography variant="body2" paragraph>
             {movie.overview || "No description available."}
           </Typography>
-          <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+            onClick={handlePurchase}
+          >
             Beli Film Ini
           </Button>
         </Box>

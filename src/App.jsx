@@ -8,6 +8,8 @@ import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { CssBaseline, Box } from "@mui/material";
 import ProfilePage from "./pages/ProfilePage";
+import CartPage from "./pages/CartPage";
+import PaymentPage from "./pages/PaymentPage";
 
 const App = () => {
   return (
@@ -35,6 +37,22 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <CartPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payment"
+              element={
+                <ProtectedRoute>
+                  <PaymentPage />
                 </ProtectedRoute>
               }
             />

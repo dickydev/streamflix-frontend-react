@@ -4,7 +4,8 @@ export const AuthService = {
     if (users.some((user) => user.username === username)) {
       return { success: false, message: "Username sudah terdaftar" };
     }
-    users.push({ username, password });
+    const newUser = { username, password, saldo: 100000, purchases: [] };
+    users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
     return { success: true, message: "Registrasi berhasil" };
   },
@@ -32,5 +33,16 @@ export const AuthService = {
 
   isAuthenticated: () => {
     return !!localStorage.getItem("currentUser");
+  },
+  updateUserData: (updatedUser) => {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex(
+      (user) => user.username === updatedUser.username
+    );
+    if (userIndex !== -1) {
+      users[userIndex] = updatedUser;
+      localStorage.setItem("users", JSON.stringify(users));
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+    }
   },
 };
