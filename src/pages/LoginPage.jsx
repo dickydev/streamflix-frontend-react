@@ -83,7 +83,16 @@ const LoginPage = () => {
           variant="outlined"
           color="secondary"
           fullWidth
-          sx={{ mt: 2 }}
+          sx={{
+            mt: 2,
+            borderColor: "#b3b3b3", 
+            color: "#b3b3b3",
+            "&:hover": {
+              borderColor: "#cf0000",
+              backgroundColor: "#cf0000", 
+              color: "#ffffff", 
+            },
+          }}
           onClick={handleRegisterRedirect}
         >
           Register

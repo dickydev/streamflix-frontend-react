@@ -9,6 +9,7 @@ import {
   Button,
   Box,
   Chip,
+  Rating,
 } from "@mui/material";
 
 const MovieCard = ({ movie, genresList }) => {
@@ -16,6 +17,8 @@ const MovieCard = ({ movie, genresList }) => {
   const movieGenres = movie.genre_ids.map(
     (genreId) => genresList.find((genre) => genre.id === genreId)?.name
   );
+
+  const roundedVoteAverage = Math.round(movie.vote_average * 10) / 10;
 
   return (
     <Card sx={{ width: 250, margin: "0 auto" }}>
@@ -37,6 +40,20 @@ const MovieCard = ({ movie, genresList }) => {
         >
           {movie.title}
         </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Rating
+            value={roundedVoteAverage / 2} 
+            precision={0.1} 
+            readOnly
+          />
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ marginLeft: 1 }}
+          >
+            {roundedVoteAverage} / 10
+          </Typography>
+        </Box>
         <Typography variant="body2" color="text.secondary">
           Price: Rp. {price.toLocaleString("id-ID")}
         </Typography>

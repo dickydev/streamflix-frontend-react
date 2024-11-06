@@ -78,6 +78,13 @@ const CartPage = () => {
                   size="small"
                   color="secondary"
                   onClick={() => handleRemoveItem(index)}
+                  sx={{
+                    backgroundColor: "white", 
+                    color: "red", 
+                    "&:hover": {
+                      backgroundColor: "#f0f0f0",
+                    },
+                  }}
                 >
                   Hapus
                 </Button>

@@ -115,7 +115,19 @@ const Navbar = () => {
                 <AccountCircleIcon />
               </IconButton>
               <IconButton color="inherit" component={Link} to="/cart">
-                <Badge badgeContent={cartItems.length} color="error">
+                <Badge
+                  badgeContent={cartItems.length}
+                  color="error"
+                  sx={{
+                    ".MuiBadge-dot": {
+                      backgroundColor: "white",
+                    },
+                    ".MuiBadge-standard": {
+                      backgroundColor: "white",
+                      color: "#cf0000",
+                    },
+                  }}
+                >
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>

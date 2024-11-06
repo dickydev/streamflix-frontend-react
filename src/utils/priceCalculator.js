@@ -1,4 +1,6 @@
 export const calculatePrice = (rating) => {
+  if (rating === 0 || rating == null) return 0;
+
   if (rating >= 1 && rating < 3) return 3500;
   if (rating >= 3 && rating < 6) return 8250;
   if (rating >= 6 && rating < 8) return 16350;

@@ -102,7 +102,20 @@ const HomePage = () => {
         fullWidth
         value={searchQuery}
         onChange={handleSearchChange}
-        sx={{ mb: 3 }}
+        sx={{
+          mb: 3,
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white", 
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white", 
+            },
+          },
+        }}
       />
 
       {genresList.length > 0 && (
@@ -118,6 +131,20 @@ const HomePage = () => {
                 .map((id) => genresList.find((genre) => genre.id === id)?.name)
                 .join(", ")
             }
+            variant="outlined"
+            InputProps={{
+              sx: {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "white",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "white",
+                },
+              },
+            }}
           >
             {genresList.map((genre) => (
               <MenuItem key={genre.id} value={genre.id}>
@@ -140,9 +167,13 @@ const HomePage = () => {
 
       <Button
         variant="contained"
-        color="secondary"
         onClick={loadMore}
-        sx={{ marginTop: 4, width: "100%" }}
+        sx={{
+          marginTop: 4,
+          width: "100%",
+          backgroundColor: "white",
+          color: "black",
+        }}
       >
         Load More
       </Button>
