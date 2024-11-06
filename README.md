@@ -19,6 +19,110 @@ This project provides a minimal setup for a modern React application powered by 
 
 ---
 
+# Step-by-Step Guide
+
+## Step 1: Register
+
+To begin using the app, you need to create an account. Follow these steps:
+
+1. **Navigate to the Registration Page**:
+   - On the homepage or login page, click on the **"Register"** link to access the registration page.
+2. **Fill in the Registration Form**:
+   - **Username**: Enter a unique username.
+   - **Email**: Provide a valid email address.
+   - **Password**: Choose a secure password.
+3. **Submit**:
+
+   - After filling out the form, click the **"Register"** button to create your account.
+
+4. **Success**:
+   - Upon successful registration, you will be redirected to the login page.
+
+---
+
+## Step 2: Login
+
+Once you've registered, log in to access the main features of the app:
+
+1. **Navigate to the Login Page**:
+   - After registration, you will be redirected to the login page (or you can manually navigate to it).
+2. **Enter Credentials**:
+
+   - **Username**: Enter the username you registered with.
+   - **Password**: Enter your password.
+
+3. **Submit**:
+
+   - Click the **"Login"** button.
+
+4. **Home Page**:
+   - Upon successful login, you will be redirected to the homepage, where you can browse movies and purchase them.
+
+---
+
+## Step 3: Browse Movies
+
+Now that you are logged in, you can browse the available movies:
+
+1. **Navigate to the Movies Section**:
+   - On the homepage, you will see a list of available movies.
+2. **View Movie Details**:
+
+   - Click on any movie to see its details, including a description, price, and genre.
+
+3. **Search for Movies**:
+
+   - Use the search bar to filter movies by title or genre.
+
+4. **Sort Movies**:
+   - You can sort movies by release date or price (low to high/high to low).
+
+---
+
+## Step 4: Add Movie to Cart
+
+If you want to purchase a movie, you can add it to your cart:
+
+1. **Select a Movie**:
+   - Choose a movie that you wish to purchase by clicking on its card.
+2. **Add to Cart**:
+
+   - On the movie details page, click the **"Add to Cart"** button.
+
+3. **View Cart**:
+   - You can click on the **"Cart"** icon in the top navigation to view the movies you’ve added.
+
+---
+
+## Step 5: Purchase Movie
+
+Once you’ve added movies to your cart, it’s time to purchase them:
+
+1. **Go to the Cart**:
+
+   - Click on the **"Cart"** icon in the top navigation bar to view all the items in your cart.
+
+2. **Review Items**:
+
+   - Ensure the correct movies are in your cart, check the total price, and make any necessary changes.
+
+3. **Proceed to Checkout**:
+
+   - Click on the **"Proceed to Checkout"** button.
+
+4. **Enter Payment Information**:
+
+   - Fill in your payment details (credit card, PayPal, etc.).
+
+5. **Complete Purchase**:
+
+   - Click on **"Confirm Purchase"** to finalize your transaction.
+
+6. **Success**:
+   - Upon successful purchase, you will receive a confirmation message, and the movie will be available in your **"Purchased"** section.
+
+---
+
 ## Technologies Used
 
 This project utilizes the following technologies:
