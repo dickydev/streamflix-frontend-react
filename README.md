@@ -16,8 +16,6 @@ This project provides a minimal setup for a modern React application powered by 
 - [Custom Theme](#custom-theme)
 - [Authentication Flow](#authentication-flow)
 - [Custom Button Styles](#custom-button-styles)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
