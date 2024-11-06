@@ -3,28 +3,60 @@ import { fetchMoviesNowPlaying } from "../services/tmdbApi";
 import MovieCard from "../components/MovieCard";
 import FullScreenSwiper from "../components/FullScreenSwiper";
 import { useSearchParams } from "react-router-dom";
-import { Container, Grid, Typography, Button, Box } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Box,
+  TextField,
+} from "@mui/material";
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("query") || ""
+  );
 
   console.log(searchParams);
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await fetchMoviesNowPlaying(page);
-        setMovies((prevMovies) => [...prevMovies, ...response.data.results]);
-        setSearchParams({ page });
+        let response;
+        if (searchQuery === "") {
+          response = await fetchMoviesNowPlaying(page);
+        } else {
+          response = await fetchMoviesNowPlaying(page, searchQuery);
+        }
+
+        setMovies((prevMovies) =>
+          page === 1
+            ? response.data.results
+            : [...prevMovies, ...response.data.results]
+        );
+
+        setSearchParams({ page, query: searchQuery });
       } catch (error) {
         console.error(error);
       }
     };
     fetchMovies();
-  }, [page, setSearchParams]);
+  }, [page, setSearchParams, searchQuery]);
 
   const loadMore = () => setPage(page + 1);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  useEffect(() => {
+    if (searchQuery !== "") {
+      setPage(1);
+      setMovies([]);
+    }
+  }, [searchQuery]);
 
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
@@ -34,6 +66,15 @@ const HomePage = () => {
       <Typography variant="h4" component="h1" gutterBottom>
         Now Playing Movies
       </Typography>
+
+      <TextField
+        label="Search Movies"
+        variant="outlined"
+        fullWidth
+        value={searchQuery}
+        onChange={handleSearchChange}
+        sx={{ mb: 3 }}
+      />
 
       <Grid container spacing={3} justifyContent="center">
         {movies.map((movie) => (
