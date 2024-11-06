@@ -3,7 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchMovieDetails, fetchSimilarMovies } from "../services/tmdbApi";
 import { calculatePrice } from "../utils/priceCalculator";
 import MovieDetailCard from "../components/MovieDetailCard";
-import { Container, Typography, Grid, Button, Box } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Grid,
+  Button,
+  Box,
+  Rating,
+} from "@mui/material";
 import { AuthService } from "../services/AuthService";
 
 const MovieDetailPage = () => {
@@ -82,6 +89,8 @@ const MovieDetailPage = () => {
     }
   };
 
+  const roundedVoteAverage = Math.round(movie.vote_average * 10) / 10;
+
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -99,8 +108,10 @@ const MovieDetailPage = () => {
         />
         <Box>
           <Typography variant="body1" paragraph>
-            Rating: {movie.vote_average}
+            <Rating value={roundedVoteAverage / 2} precision={0.1} readOnly />
+            {roundedVoteAverage} / 10
           </Typography>
+
           <Typography variant="body1" paragraph>
             Price: Rp. {price.toLocaleString("id-ID")}
           </Typography>
