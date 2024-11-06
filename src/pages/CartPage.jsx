@@ -25,6 +25,13 @@ const CartPage = () => {
   };
 
   console.log(cartItems);
+  const handleRemoveItem = (index) => {
+    const updatedCartItems = [...cartItems];
+    updatedCartItems.splice(index, 1);
+    setCartItems(updatedCartItems);
+    localStorage.setItem("cart", JSON.stringify(updatedCartItems));
+    window.location.reload();
+  };
 
   return (
     <Container maxWidth="sm" sx={{ mt: 4 }}>
@@ -67,7 +74,11 @@ const CartPage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" color="secondary">
+                <Button
+                  size="small"
+                  color="secondary"
+                  onClick={() => handleRemoveItem(index)}
+                >
                   Hapus
                 </Button>
               </CardActions>
