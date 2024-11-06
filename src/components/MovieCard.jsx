@@ -40,7 +40,7 @@ const MovieCard = ({ movie }) => {
           color="primary"
           component={Link}
           to={`/${movie.id}-${movie.title.replace(/\s+/g, "-").toLowerCase()}`}
-          sx={{ marginTop: 1 }}
+          sx={{ marginTop: 1, display: "flex" }}
         >
           Details
         </Button>

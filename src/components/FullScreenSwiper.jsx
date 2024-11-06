@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Box, Typography } from "@mui/material";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import PropTypes from "prop-types";
 
 const FullScreenSwiper = ({ movies }) => {
@@ -17,11 +17,15 @@ const FullScreenSwiper = ({ movies }) => {
       }}
     >
       <Swiper
-        modules={[Navigation, Pagination]}
+        modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
         style={{
           width: "100%",
           height: "100%",
