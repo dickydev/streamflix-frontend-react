@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchMoviesNowPlaying } from "../services/tmdbApi";
 import MovieCard from "../components/MovieCard";
+import FullScreenSwiper from "../components/FullScreenSwiper";
 import { useSearchParams } from "react-router-dom";
 import { Container, Grid, Typography, Button, Box } from "@mui/material";
 
@@ -26,7 +27,10 @@ const HomePage = () => {
   const loadMore = () => setPage(page + 1);
 
   return (
-    <Container maxWidth="lg" sx={{ textAlign: "center" }}>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Box mb={3}>
+        <FullScreenSwiper movies={movies} />
+      </Box>
       <Typography variant="h4" component="h1" gutterBottom>
         Now Playing Movies
       </Typography>
@@ -45,7 +49,7 @@ const HomePage = () => {
         variant="contained"
         color="secondary"
         onClick={loadMore}
-        sx={{ marginTop: 4 }}
+        sx={{ marginTop: 4, width: "100%" }}
       >
         Load More
       </Button>
