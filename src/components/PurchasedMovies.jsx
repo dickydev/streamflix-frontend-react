@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
 
 const PurchasedMovies = ({ purchases }) => {
+  console.log(purchases);
+
   return (
     <Box sx={{ textAlign: "left", mt: 2 }}>
       {" "}
@@ -48,12 +50,12 @@ const PurchasedMovies = ({ purchases }) => {
 PurchasedMovies.propTypes = {
   purchases: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired, 
-      title: PropTypes.string.isRequired, 
-      price: PropTypes.number.isRequired, 
-      imageUrl: PropTypes.string, 
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      imageUrl: PropTypes.string,
     })
-  ).isRequired, 
+  ).isRequired,
 };
 
 export default PurchasedMovies;

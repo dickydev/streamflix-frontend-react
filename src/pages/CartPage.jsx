@@ -24,6 +24,8 @@ const CartPage = () => {
     navigate("/payment", { state: { cartItems } });
   };
 
+  console.log(cartItems);
+
   return (
     <Container maxWidth="sm" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -36,18 +38,40 @@ const CartPage = () => {
         </Typography>
       ) : (
         cartItems.map((item, index) => (
-          <Card key={index} sx={{ mb: 2 }}>
-            <CardContent>
-              <Typography variant="h6">{item.title}</Typography>
-              <Typography variant="body2" color="textSecondary">
-                Harga: Rp. {item.price.toLocaleString("id-ID")}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" color="secondary">
-                Hapus
-              </Button>
-            </CardActions>
+          <Card key={index} sx={{ mb: 2, display: "flex" }}>
+            <img
+              src={`https://image.tmdb.org/t/p/w500/` + item.poster_path}
+              alt={item.title}
+              style={{
+                width: "100px",
+                height: "auto",
+                borderRadius: "4px",
+                marginRight: "16px",
+              }}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/default_movie_image.jpg";
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+              }}
+            >
+              <CardContent>
+                <Typography variant="h6">{item.title}</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Harga: Rp. {item.price.toLocaleString("id-ID")}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" color="secondary">
+                  Hapus
+                </Button>
+              </CardActions>
+            </Box>
           </Card>
         ))
       )}
