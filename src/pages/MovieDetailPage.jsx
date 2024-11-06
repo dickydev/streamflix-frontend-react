@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchMovieDetails, fetchSimilarMovies } from "../services/tmdbApi";
 import { calculatePrice } from "../utils/priceCalculator";
-import MovieCard from "../components/MovieCard";
+import MovieDetailCard from "../components/MovieDetailCard";
 import { Container, Typography, Grid, Button, Box } from "@mui/material";
 import { AuthService } from "../services/AuthService";
 
@@ -134,7 +134,7 @@ const MovieDetailPage = () => {
       <Grid container spacing={3}>
         {similarMovies.map((simMovie) => (
           <Grid item xs={12} sm={6} md={4} key={simMovie.id}>
-            <MovieCard movie={simMovie} />
+            <MovieDetailCard movie={simMovie} />
           </Grid>
         ))}
       </Grid>

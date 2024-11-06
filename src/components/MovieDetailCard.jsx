@@ -7,15 +7,10 @@ import {
   CardContent,
   Typography,
   Button,
-  Box,
-  Chip,
 } from "@mui/material";
 
-const MovieCard = ({ movie, genresList }) => {
+const MovieDetailCard = ({ movie }) => {
   const price = calculatePrice(movie.vote_average);
-  const movieGenres = movie.genre_ids.map(
-    (genreId) => genresList.find((genre) => genre.id === genreId)?.name
-  );
 
   return (
     <Card sx={{ width: 250, margin: "0 auto" }}>
@@ -40,34 +35,6 @@ const MovieCard = ({ movie, genresList }) => {
         <Typography variant="body2" color="text.secondary">
           Price: Rp. {price.toLocaleString("id-ID")}
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "nowrap",
-            overflowX: "auto",
-            marginTop: 1,
-            paddingBottom: "8px",
-            maxWidth: "100%",
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            "&::-webkit-scrollbar": {
-              display: "none",
-            },
-          }}
-        >
-          {movieGenres.map((genre, index) => (
-            <Chip
-              key={index}
-              label={genre}
-              sx={{
-                margin: "2px",
-                backgroundColor: "#e0e0e0",
-                color: "#555",
-                whiteSpace: "nowrap",
-              }}
-            />
-          ))}
-        </Box>
         <Button
           variant="contained"
           color="primary"
@@ -82,20 +49,13 @@ const MovieCard = ({ movie, genresList }) => {
   );
 };
 
-MovieCard.propTypes = {
+MovieDetailCard.propTypes = {
   movie: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     poster_path: PropTypes.string.isRequired,
     vote_average: PropTypes.number.isRequired,
-    genre_ids: PropTypes.arrayOf(PropTypes.number).isRequired,
   }).isRequired,
-  genresList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
 };
 
-export default MovieCard;
+export default MovieDetailCard;

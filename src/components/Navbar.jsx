@@ -99,7 +99,7 @@ const Navbar = () => {
             to="/"
             sx={{ flexGrow: 1, color: "inherit", textDecoration: "none" }}
           >
-            Movie Store
+            StreamFlix
           </Typography>
           <Button color="inherit" component={Link} to="/">
             Home

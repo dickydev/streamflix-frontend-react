@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchMoviesNowPlaying } from "../services/tmdbApi";
+import { fetchMoviesNowPlaying, fetchMovieGenres } from "../services/tmdbApi";
 import MovieCard from "../components/MovieCard";
 import FullScreenSwiper from "../components/FullScreenSwiper";
 import { useSearchParams } from "react-router-dom";
@@ -10,17 +10,36 @@ import {
   Button,
   Box,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
+  const [genresList, setGenresList] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("query") || ""
   );
 
-  console.log(searchParams);
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await fetchMovieGenres();
+        setGenresList(response.data.genres);
+      } catch (error) {
+        console.error("Error fetching genres:", error);
+      }
+    };
+
+    fetchGenres();
+  }, []);
+
+  console.log(movies);
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -58,6 +77,16 @@ const HomePage = () => {
     }
   }, [searchQuery]);
 
+  const handleGenreChange = (event) => {
+    setSelectedGenres(event.target.value);
+  };
+
+  const filteredMovies = movies.filter((movie) =>
+    selectedGenres.length === 0
+      ? true
+      : movie.genre_ids.some((genreId) => selectedGenres.includes(genreId))
+  );
+
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
       <Box mb={3}>
@@ -76,11 +105,34 @@ const HomePage = () => {
         sx={{ mb: 3 }}
       />
 
+      {genresList.length > 0 && (
+        <FormControl fullWidth sx={{ mb: 3 }}>
+          <InputLabel>Genres</InputLabel>
+          <Select
+            label="Genres"
+            multiple
+            value={selectedGenres}
+            onChange={handleGenreChange}
+            renderValue={(selected) =>
+              selected
+                .map((id) => genresList.find((genre) => genre.id === id)?.name)
+                .join(", ")
+            }
+          >
+            {genresList.map((genre) => (
+              <MenuItem key={genre.id} value={genre.id}>
+                {genre.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
+
       <Grid container spacing={3} justifyContent="center">
-        {movies.map((movie) => (
+        {filteredMovies.map((movie) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
             <Box display="flex" justifyContent="center">
-              <MovieCard movie={movie} />
+              <MovieCard movie={movie} genresList={genresList} />
             </Box>
           </Grid>
         ))}

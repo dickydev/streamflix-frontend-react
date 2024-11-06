@@ -5,15 +5,15 @@ const BASE_URL = "https://api.themoviedb.org/3";
 
 export const fetchMoviesNowPlaying = (page = 1, searchQuery = "") => {
   const url = searchQuery
-    ? `${BASE_URL}/search/movie` // Gunakan endpoint pencarian jika searchQuery ada
-    : `${BASE_URL}/movie/now_playing`; // Gunakan endpoint untuk film yang sedang tayang
+    ? `${BASE_URL}/search/movie`
+    : `${BASE_URL}/movie/now_playing`;
 
   return axios.get(url, {
     params: {
       api_key: API_KEY,
-      region: "ID", // Memfilter film berdasarkan negara
+      region: "ID",
       page,
-      query: searchQuery, // Menambahkan query pencarian jika ada
+      query: searchQuery,
     },
   });
 };
@@ -27,3 +27,17 @@ export const fetchSimilarMovies = (movieId) =>
   axios.get(`${BASE_URL}/movie/${movieId}/similar`, {
     params: { api_key: API_KEY },
   });
+
+export const fetchMovieGenres = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/genre/movie/list`, {
+      params: {
+        api_key: API_KEY,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error fetching genres:", error);
+    throw error;
+  }
+};

@@ -8,7 +8,7 @@ const Footer = () => {
     >
       <Container maxWidth="lg">
         <Typography variant="body2" align="center">
-          © {new Date().getFullYear()} Movie Store. All rights reserved.
+          © {new Date().getFullYear()} StreamFlix. All rights reserved.
         </Typography>
       </Container>
     </Box>
